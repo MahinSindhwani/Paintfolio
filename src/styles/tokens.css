@@ -1,0 +1,20 @@
+/* Theme tokens. The palette tool rewrites these at runtime — every color in
+   the app must come from here. */
+:root {
+  --px: 3px;
+
+  --surface: #c0c0c0;
+  --surface-light: #dfdfdf;
+  --surface-white: #ffffff;
+  --shadow: #808080;
+  --shadow-dark: #000000;
+  --title-active: #000080;
+  --title-inactive: #808080;
+  --canvas: #ffffff;
+  --ink: #000000;
+  --text: #000000;
+  --text-inverse: #ffffff;
+
+  --font: "Pixelated MS Sans Serif", "MS Sans Serif", Tahoma, sans-serif;
+  --font-size: 11px;
+}

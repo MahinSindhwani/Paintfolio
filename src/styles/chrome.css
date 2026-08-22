@@ -1,0 +1,202 @@
+/* Window chrome: 98.css overridden toward Win95. Chrome is 1× — native
+   metrics, 11px pixel font, 1px bevels. Only page content scales with --px. */
+
+* {
+  border-radius: 0;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--font-size);
+  -webkit-font-smoothing: none;
+}
+
+/* Bevel recipes (Win95). Raised for buttons/frames, sunken for wells. */
+.raised {
+  border: 1px solid;
+  border-color: var(--surface-light) var(--shadow-dark) var(--shadow-dark) var(--surface-light);
+  box-shadow: inset -1px -1px var(--shadow), inset 1px 1px var(--surface-white);
+}
+
+.sunken {
+  border: 1px solid;
+  border-color: var(--shadow) var(--surface-white) var(--surface-white) var(--shadow);
+  box-shadow: inset -1px -1px var(--surface-light), inset 1px 1px var(--shadow-dark);
+}
+
+/* Window frame fills the viewport. Re-token 98.css's hardcoded frame colors. */
+.paint-window {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--surface);
+  box-shadow:
+    inset -1px -1px var(--shadow-dark),
+    inset 1px 1px var(--surface-light),
+    inset -2px -2px var(--shadow),
+    inset 2px 2px var(--surface-white);
+}
+
+/* Title bar: Win95 is flat --title-active, not 98.css's Win98 gradient. */
+.title-bar {
+  flex: none;
+  background: var(--title-active);
+}
+
+.title-bar.inactive {
+  background: var(--title-inactive);
+}
+
+.title-bar-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-inverse);
+}
+
+.title-bar-icon svg {
+  display: block;
+}
+
+/* Menu bar */
+.menu-bar {
+  flex: none;
+  display: flex;
+  padding: 1px 0;
+}
+
+.menu-item {
+  padding: 3px 6px;
+}
+
+/* Access-key underlines: 98.css draws <u> as a blurry .5px border. */
+.menu-bar u {
+  border-bottom: none;
+  text-decoration: underline;
+}
+
+/* Middle row: tool box | canvas well */
+.paint-main {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.tool-box {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  padding: 2px 2px 2px 3px;
+}
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 25px);
+}
+
+/* 98.css buttons hide their label via color: transparent — undo for icons. */
+.tool-button {
+  min-width: 25px;
+  min-height: 25px;
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  color: var(--text);
+  text-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tool-button svg {
+  display: block;
+}
+
+.tool-options {
+  margin-top: 3px;
+  width: 50px;
+  height: 66px;
+}
+
+/* Color box: fg/bg indicator + 2×14 swatch grid */
+.color-box {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 4px;
+}
+
+.color-indicator {
+  position: relative;
+  width: 30px;
+  height: 30px;
+}
+
+.color-indicator .fg,
+.color-indicator .bg {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--shadow-dark);
+}
+
+.color-indicator .fg {
+  left: 3px;
+  top: 3px;
+  background: var(--ink);
+  z-index: 1;
+}
+
+.color-indicator .bg {
+  right: 3px;
+  bottom: 3px;
+  background: var(--canvas);
+}
+
+.swatch-grid {
+  display: grid;
+  grid-template-rows: repeat(2, 16px);
+  grid-auto-flow: column;
+  grid-auto-columns: 16px;
+}
+
+.swatch {
+  display: block;
+  padding: 2px;
+  background: var(--surface);
+}
+
+.swatch-color {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Status bar: re-token 98.css's hardcoded sunken fields. */
+.status-bar {
+  flex: none;
+  margin: 0 1px 1px;
+}
+
+.status-bar-field {
+  box-shadow: inset -1px -1px var(--surface-light), inset 1px 1px var(--shadow);
+}
+
+.status-help {
+  flex: 4;
+}
+
+.status-cell {
+  flex: 1;
+}
