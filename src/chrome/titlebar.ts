@@ -1,22 +1,30 @@
-import { createElement } from './dom';
 import { pixelArtToSvg, APP_ICON } from './icons';
 
 export function createTitleBar(): HTMLElement {
-  const icon = createElement('span', 'title-bar-icon');
+  const icon = document.createElement('span');
+  icon.className = 'title-bar-icon';
   icon.innerHTML = pixelArtToSvg(APP_ICON);
 
-  const text = createElement('div', 'title-bar-text', [icon, 'untitled - Paint']);
-  const controls = createElement('div', 'title-bar-controls', [
+  const text = document.createElement('div');
+  text.className = 'title-bar-text';
+  text.append(icon, 'untitled - Paint');
+
+  const controls = document.createElement('div');
+  controls.className = 'title-bar-controls';
+  controls.append(
     createWindowControlButton('Minimize'),
     createWindowControlButton('Maximize'),
     createWindowControlButton('Close'),
-  ]);
+  );
 
-  return createElement('div', 'title-bar', [text, controls]);
+  const titleBar = document.createElement('div');
+  titleBar.className = 'title-bar';
+  titleBar.append(text, controls);
+  return titleBar;
 }
 
 function createWindowControlButton(label: string): HTMLButtonElement {
-  const button = createElement('button');
+  const button = document.createElement('button');
   button.type = 'button';
   button.setAttribute('aria-label', label);
   return button;

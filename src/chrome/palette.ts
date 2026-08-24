@@ -1,5 +1,3 @@
-import { createElement } from './dom';
-
 /* The 28 canonical MS Paint swatch colors, column-major to match the 2-row
    grid (dark shade above its light pair). These are future ink data for the
    drawing tools, not theme tokens — the theme lives in styles/tokens.css. */
@@ -21,16 +19,37 @@ export const PAINT_COLORS = [
 ] as const;
 
 export function createPalette(): HTMLElement {
-  const foregroundBackgroundIndicator = createElement('div', 'color-indicator sunken', [
-    createElement('span', 'bg'),
-    createElement('span', 'fg'),
-  ]);
-  const swatchGrid = createElement('div', 'swatch-grid', PAINT_COLORS.map(createSwatch));
-  return createElement('div', 'color-box', [foregroundBackgroundIndicator, swatchGrid]);
+  const swatchGrid = document.createElement('div');
+  swatchGrid.className = 'swatch-grid';
+  swatchGrid.append(...PAINT_COLORS.map(createSwatch));
+
+  const colorBox = document.createElement('div');
+  colorBox.className = 'color-box';
+  colorBox.append(createForegroundBackgroundIndicator(), swatchGrid);
+  return colorBox;
+}
+
+/* The two overlapping squares showing the current draw and fill colors. */
+function createForegroundBackgroundIndicator(): HTMLElement {
+  const backgroundSquare = document.createElement('span');
+  backgroundSquare.className = 'bg';
+
+  const foregroundSquare = document.createElement('span');
+  foregroundSquare.className = 'fg';
+
+  const indicator = document.createElement('div');
+  indicator.className = 'color-indicator sunken';
+  indicator.append(backgroundSquare, foregroundSquare);
+  return indicator;
 }
 
 function createSwatch(color: string): HTMLElement {
-  const colorChip = createElement('span', 'swatch-color');
+  const colorChip = document.createElement('span');
+  colorChip.className = 'swatch-color';
   colorChip.style.background = color;
-  return createElement('span', 'swatch sunken', [colorChip]);
+
+  const swatch = document.createElement('span');
+  swatch.className = 'swatch sunken';
+  swatch.append(colorChip);
+  return swatch;
 }

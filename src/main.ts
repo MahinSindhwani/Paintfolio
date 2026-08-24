@@ -3,7 +3,6 @@ import './styles/tokens.css';
 import './styles/chrome.css';
 import './styles/canvas.css';
 
-import { createElement } from './chrome/dom';
 import { pixelArtToSvg, ARROW_ICONS, type ArrowDirection } from './chrome/icons';
 import { createTitleBar } from './chrome/titlebar';
 import { createMenuBar } from './chrome/menubar';
@@ -14,36 +13,63 @@ import { createStatusBar } from './chrome/statusbar';
 const app = document.getElementById('app');
 if (!app) throw new Error('missing #app root element');
 
-app.append(
-  createElement('div', 'window paint-window', [
-    createTitleBar(),
-    createMenuBar(),
-    createElement('div', 'paint-main', [createToolbar(), createCanvasWell()]),
-    createPalette(),
-    createStatusBar(),
-  ]),
+const paintMain = document.createElement('div');
+paintMain.className = 'paint-main';
+paintMain.append(createToolbar(), createCanvasWell());
+
+const paintWindow = document.createElement('div');
+paintWindow.className = 'window paint-window';
+paintWindow.append(
+  createTitleBar(),
+  createMenuBar(),
+  paintMain,
+  createPalette(),
+  createStatusBar(),
 );
+
+app.append(paintWindow);
 
 /* The well holds the paper and decorative scrollbars. Real page rects and
    the hit layer arrive with later build items; this is display only. */
 function createCanvasWell(): HTMLElement {
-  const viewport = createElement('div', 'canvas-viewport', [createElement('div', 'paper')]);
-  const vertical = createElement('div', 'scrollbar scrollbar-vertical', [
-    createScrollArrowButton('up'),
-    createElement('div', 'scrollbar-track'),
-    createScrollArrowButton('down'),
-  ]);
-  const horizontal = createElement('div', 'scrollbar scrollbar-horizontal', [
-    createScrollArrowButton('left'),
-    createElement('div', 'scrollbar-track'),
-    createScrollArrowButton('right'),
-  ]);
-  const corner = createElement('div', 'scrollbar-corner');
-  return createElement('div', 'canvas-well sunken', [viewport, vertical, horizontal, corner]);
+  const paper = document.createElement('div');
+  paper.className = 'paper';
+
+  const viewport = document.createElement('div');
+  viewport.className = 'canvas-viewport';
+  viewport.append(paper);
+
+  const corner = document.createElement('div');
+  corner.className = 'scrollbar-corner';
+
+  const well = document.createElement('div');
+  well.className = 'canvas-well sunken';
+  well.append(
+    viewport,
+    createScrollbar('vertical', 'up', 'down'),
+    createScrollbar('horizontal', 'left', 'right'),
+    corner,
+  );
+  return well;
+}
+
+function createScrollbar(
+  orientation: 'vertical' | 'horizontal',
+  startArrow: ArrowDirection,
+  endArrow: ArrowDirection,
+): HTMLElement {
+  const track = document.createElement('div');
+  track.className = 'scrollbar-track';
+
+  const scrollbar = document.createElement('div');
+  scrollbar.className = `scrollbar scrollbar-${orientation}`;
+  scrollbar.append(createScrollArrowButton(startArrow), track, createScrollArrowButton(endArrow));
+  return scrollbar;
 }
 
 function createScrollArrowButton(direction: ArrowDirection): HTMLButtonElement {
-  const button = createElement('button', 'scroll-button');
+  const button = document.createElement('button');
+  button.className = 'scroll-button';
   button.type = 'button';
   button.tabIndex = -1;
   button.setAttribute('aria-hidden', 'true');
