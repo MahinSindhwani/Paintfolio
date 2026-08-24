@@ -1,22 +1,22 @@
-import { el } from './dom';
-import { pixelSvg, APP_ICON } from './icons';
+import { createElement } from './dom';
+import { pixelArtToSvg, APP_ICON } from './icons';
 
 export function createTitleBar(): HTMLElement {
-  const icon = el('span', 'title-bar-icon');
-  icon.innerHTML = pixelSvg(APP_ICON);
+  const icon = createElement('span', 'title-bar-icon');
+  icon.innerHTML = pixelArtToSvg(APP_ICON);
 
-  const text = el('div', 'title-bar-text', [icon, 'untitled - Paint']);
-  const controls = el('div', 'title-bar-controls', [
-    controlButton('Minimize'),
-    controlButton('Maximize'),
-    controlButton('Close'),
+  const text = createElement('div', 'title-bar-text', [icon, 'untitled - Paint']);
+  const controls = createElement('div', 'title-bar-controls', [
+    createWindowControlButton('Minimize'),
+    createWindowControlButton('Maximize'),
+    createWindowControlButton('Close'),
   ]);
 
-  return el('div', 'title-bar', [text, controls]);
+  return createElement('div', 'title-bar', [text, controls]);
 }
 
-function controlButton(label: string): HTMLButtonElement {
-  const button = el('button');
+function createWindowControlButton(label: string): HTMLButtonElement {
+  const button = createElement('button');
   button.type = 'button';
   button.setAttribute('aria-label', label);
   return button;

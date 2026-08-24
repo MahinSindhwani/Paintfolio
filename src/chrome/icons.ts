@@ -2,25 +2,25 @@
    is a filled pixel. Rendered as 1×-scale SVG rects with crisp edges. */
 
 /** Render a pixel grid as an inline SVG string, filled with currentColor. */
-export function pixelSvg(rows: readonly string[], size = 16): string {
-  const rects: string[] = [];
-  rows.forEach((row, y) => {
+export function pixelArtToSvg(pixelRows: readonly string[], gridSize = 16): string {
+  const rectangles: string[] = [];
+  pixelRows.forEach((row, y) => {
     let x = 0;
     while (x < row.length) {
       if (row[x] !== '#') {
         x += 1;
         continue;
       }
-      let width = 0;
-      while (row[x + width] === '#') width += 1;
-      rects.push(`<rect x="${x}" y="${y}" width="${width}" height="1"/>`);
-      x += width;
+      let runWidth = 0;
+      while (row[x + runWidth] === '#') runWidth += 1;
+      rectangles.push(`<rect x="${x}" y="${y}" width="${runWidth}" height="1"/>`);
+      x += runWidth;
     }
   });
   return (
-    `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}"` +
+    `<svg viewBox="0 0 ${gridSize} ${gridSize}" width="${gridSize}" height="${gridSize}"` +
     ` fill="currentColor" shape-rendering="crispEdges" aria-hidden="true">` +
-    rects.join('') +
+    rectangles.join('') +
     `</svg>`
   );
 }

@@ -1,12 +1,12 @@
-import { el } from './dom';
+import { createElement } from './dom';
 
 export function createStatusBar(): HTMLElement {
-  const help = el('div', 'status-bar-field status-help', [
+  const help = createElement('div', 'status-bar-field status-help', [
     'For Help, click Help Topics on the Help Menu.',
   ]);
-  return el('div', 'status-bar', [
+  return createElement('div', 'status-bar', [
     help,
-    el('div', 'status-bar-field status-cell'),
-    el('div', 'status-bar-field status-cell'),
+    createElement('div', 'status-bar-field status-cell'),
+    createElement('div', 'status-bar-field status-cell'),
   ]);
 }

@@ -1,4 +1,4 @@
-import { el } from './dom';
+import { createElement } from './dom';
 
 /* The 28 canonical MS Paint swatch colors, column-major to match the 2-row
    grid (dark shade above its light pair). These are future ink data for the
@@ -21,16 +21,16 @@ export const PAINT_COLORS = [
 ] as const;
 
 export function createPalette(): HTMLElement {
-  const indicator = el('div', 'color-indicator sunken', [
-    el('span', 'bg'),
-    el('span', 'fg'),
+  const foregroundBackgroundIndicator = createElement('div', 'color-indicator sunken', [
+    createElement('span', 'bg'),
+    createElement('span', 'fg'),
   ]);
+  const swatchGrid = createElement('div', 'swatch-grid', PAINT_COLORS.map(createSwatch));
+  return createElement('div', 'color-box', [foregroundBackgroundIndicator, swatchGrid]);
+}
 
-  const swatches = PAINT_COLORS.map((color) => {
-    const chip = el('span', 'swatch-color');
-    chip.style.background = color;
-    return el('span', 'swatch sunken', [chip]);
-  });
-
-  return el('div', 'color-box', [indicator, el('div', 'swatch-grid', swatches)]);
+function createSwatch(color: string): HTMLElement {
+  const colorChip = createElement('span', 'swatch-color');
+  colorChip.style.background = color;
+  return createElement('span', 'swatch sunken', [colorChip]);
 }

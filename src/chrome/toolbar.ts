@@ -1,5 +1,5 @@
-import { el } from './dom';
-import { pixelSvg, TOOL_ICONS, type ToolIconName } from './icons';
+import { createElement } from './dom';
+import { pixelArtToSvg, TOOL_ICONS, type ToolIconName } from './icons';
 
 /* Win95 Paint tool order: two columns, read left-to-right, top-to-bottom. */
 const TOOLS: { icon: ToolIconName; label: string }[] = [
@@ -22,16 +22,16 @@ const TOOLS: { icon: ToolIconName; label: string }[] = [
 ];
 
 export function createToolbar(): HTMLElement {
-  const buttons = TOOLS.map(({ icon, label }) => {
-    const button = el('button', 'tool-button');
-    button.type = 'button';
-    button.setAttribute('aria-label', label);
-    button.title = label;
-    button.innerHTML = pixelSvg(TOOL_ICONS[icon]);
-    return button;
-  });
+  const buttonGrid = createElement('div', 'tool-grid', TOOLS.map(createToolButton));
+  const optionsBox = createElement('div', 'tool-options sunken');
+  return createElement('div', 'tool-box', [buttonGrid, optionsBox]);
+}
 
-  const grid = el('div', 'tool-grid', buttons);
-  const options = el('div', 'tool-options sunken');
-  return el('div', 'tool-box', [grid, options]);
+function createToolButton({ icon, label }: { icon: ToolIconName; label: string }): HTMLButtonElement {
+  const button = createElement('button', 'tool-button');
+  button.type = 'button';
+  button.setAttribute('aria-label', label);
+  button.title = label;
+  button.innerHTML = pixelArtToSvg(TOOL_ICONS[icon]);
+  return button;
 }
