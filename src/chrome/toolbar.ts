@@ -1,7 +1,6 @@
-import { pixelArtToSvg, TOOL_ICONS, type ToolIconName } from './icons';
-
-/* Win95 Paint tool order: two columns, read left-to-right, top-to-bottom. */
-const TOOLS: { icon: ToolIconName; label: string }[] = [
+/* Win95 Paint tool order: two columns, read left-to-right, top-to-bottom.
+   Icons are original Win95 Paint sprites in public/icons/, one PNG each. */
+const TOOLS = [
   { icon: 'free-select', label: 'Free-Form Select' },
   { icon: 'select', label: 'Select' },
   { icon: 'eraser', label: 'Eraser/Color Eraser' },
@@ -34,12 +33,19 @@ export function createToolbar(): HTMLElement {
   return toolBox;
 }
 
-function createToolButton({ icon, label }: { icon: ToolIconName; label: string }): HTMLButtonElement {
+function createToolButton({ icon, label }: { icon: string; label: string }): HTMLButtonElement {
+  const image = document.createElement('img');
+  image.src = `/icons/${icon}.png`;
+  image.width = 16;
+  image.height = 16;
+  image.alt = '';
+  image.draggable = false;
+
   const button = document.createElement('button');
   button.className = 'tool-button';
   button.type = 'button';
   button.setAttribute('aria-label', label);
   button.title = label;
-  button.innerHTML = pixelArtToSvg(TOOL_ICONS[icon]);
+  button.append(image);
   return button;
 }

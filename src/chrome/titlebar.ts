@@ -1,9 +1,11 @@
-import { pixelArtToSvg, APP_ICON } from './icons';
-
 export function createTitleBar(): HTMLElement {
-  const icon = document.createElement('span');
+  const icon = document.createElement('img');
   icon.className = 'title-bar-icon';
-  icon.innerHTML = pixelArtToSvg(APP_ICON);
+  icon.src = '/icons/paint-program.png';
+  icon.width = 16;
+  icon.height = 16;
+  icon.alt = '';
+  icon.draggable = false;
 
   const text = document.createElement('div');
   text.className = 'title-bar-text';

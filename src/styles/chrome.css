@@ -19,6 +19,14 @@ body {
   font-family: var(--font);
   font-size: var(--font-size);
   -webkit-font-smoothing: none;
+  /* Classic Win95 arrow everywhere; hotspot is the arrow tip. Per-tool
+     cursors take over inside the canvas when the tools arrive. */
+  cursor: url('/cursors/arrow.png') 0 0, default;
+}
+
+/* Buttons set their own arrow in the browser stylesheet — keep ours. */
+button {
+  cursor: inherit;
 }
 
 /* Bevel recipes (Win95). Raised for buttons/frames, sunken for wells. */
@@ -64,8 +72,9 @@ body {
   color: var(--text-inverse);
 }
 
-.title-bar-icon svg {
+.title-bar-icon {
   display: block;
+  image-rendering: pixelated;
 }
 
 /* Menu bar */
@@ -118,8 +127,9 @@ body {
   justify-content: center;
 }
 
-.tool-button svg {
+.tool-button img {
   display: block;
+  image-rendering: pixelated;
 }
 
 .tool-options {

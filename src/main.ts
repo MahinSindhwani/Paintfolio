@@ -3,7 +3,6 @@ import './styles/tokens.css';
 import './styles/chrome.css';
 import './styles/canvas.css';
 
-import { pixelArtToSvg, ARROW_ICONS, type ArrowDirection } from './chrome/icons';
 import { createTitleBar } from './chrome/titlebar';
 import { createMenuBar } from './chrome/menubar';
 import { createToolbar } from './chrome/toolbar';
@@ -55,8 +54,8 @@ function createCanvasWell(): HTMLElement {
 
 function createScrollbar(
   orientation: 'vertical' | 'horizontal',
-  startArrow: ArrowDirection,
-  endArrow: ArrowDirection,
+  startArrow: string,
+  endArrow: string,
 ): HTMLElement {
   const track = document.createElement('div');
   track.className = 'scrollbar-track';
@@ -67,12 +66,19 @@ function createScrollbar(
   return scrollbar;
 }
 
-function createScrollArrowButton(direction: ArrowDirection): HTMLButtonElement {
+function createScrollArrowButton(direction: string): HTMLButtonElement {
+  const image = document.createElement('img');
+  image.src = `/icons/arrow-${direction}.png`;
+  image.width = 8;
+  image.height = 8;
+  image.alt = '';
+  image.draggable = false;
+
   const button = document.createElement('button');
   button.className = 'scroll-button';
   button.type = 'button';
   button.tabIndex = -1;
   button.setAttribute('aria-hidden', 'true');
-  button.innerHTML = pixelArtToSvg(ARROW_ICONS[direction], 8);
+  button.append(image);
   return button;
 }

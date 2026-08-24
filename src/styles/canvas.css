@@ -64,8 +64,9 @@
   justify-content: center;
 }
 
-.scroll-button svg {
+.scroll-button img {
   display: block;
+  image-rendering: pixelated;
 }
 
 .scrollbar-corner {
