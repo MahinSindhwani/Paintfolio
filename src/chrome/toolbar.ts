@@ -1,16 +1,19 @@
+import { getActiveTool, setActiveTool, subscribeToStore } from '../state/store';
+import type { Tool } from '../state/types';
+
 /* Win95 Paint tool order: two columns, read left-to-right, top-to-bottom.
-   Icons are original Win95 Paint sprites in public/icons/, one PNG each. */
-const TOOLS = [
+   Buttons without a `tool` are inert until their features land. */
+const TOOLS: { icon: string; label: string; tool?: Tool }[] = [
   { icon: 'free-select', label: 'Free-Form Select' },
-  { icon: 'select', label: 'Select' },
-  { icon: 'eraser', label: 'Eraser/Color Eraser' },
-  { icon: 'fill', label: 'Fill With Color' },
-  { icon: 'picker', label: 'Pick Color' },
+  { icon: 'select', label: 'Select', tool: 'select' },
+  { icon: 'eraser', label: 'Eraser/Color Eraser', tool: 'eraser' },
+  { icon: 'fill', label: 'Fill With Color', tool: 'fill' },
+  { icon: 'picker', label: 'Pick Color', tool: 'picker' },
   { icon: 'magnifier', label: 'Magnifier' },
-  { icon: 'pencil', label: 'Pencil' },
-  { icon: 'brush', label: 'Brush' },
+  { icon: 'pencil', label: 'Pencil', tool: 'pencil' },
+  { icon: 'brush', label: 'Brush', tool: 'brush' },
   { icon: 'airbrush', label: 'Airbrush' },
-  { icon: 'text', label: 'Text' },
+  { icon: 'text', label: 'Text', tool: 'text' },
   { icon: 'line', label: 'Line' },
   { icon: 'curve', label: 'Curve' },
   { icon: 'rectangle', label: 'Rectangle' },
@@ -20,9 +23,25 @@ const TOOLS = [
 ];
 
 export function createToolbar(): HTMLElement {
+  const toolButtons = new Map<Tool, HTMLButtonElement>();
+
   const buttonGrid = document.createElement('div');
   buttonGrid.className = 'tool-grid';
-  buttonGrid.append(...TOOLS.map(createToolButton));
+  for (const entry of TOOLS) {
+    const button = createToolButton(entry);
+    if (entry.tool) toolButtons.set(entry.tool, button);
+    buttonGrid.append(button);
+  }
+
+  const styleSelectedButton = () => {
+    for (const [tool, button] of toolButtons) {
+      const selected = tool === getActiveTool();
+      button.classList.toggle('selected', selected);
+      button.setAttribute('aria-pressed', String(selected));
+    }
+  };
+  styleSelectedButton();
+  subscribeToStore(styleSelectedButton);
 
   const optionsBox = document.createElement('div');
   optionsBox.className = 'tool-options sunken';
@@ -33,7 +52,7 @@ export function createToolbar(): HTMLElement {
   return toolBox;
 }
 
-function createToolButton({ icon, label }: { icon: string; label: string }): HTMLButtonElement {
+function createToolButton({ icon, label, tool }: { icon: string; label: string; tool?: Tool }): HTMLButtonElement {
   const image = document.createElement('img');
   image.src = `/icons/${icon}.png`;
   image.width = 16;
@@ -47,5 +66,8 @@ function createToolButton({ icon, label }: { icon: string; label: string }): HTM
   button.setAttribute('aria-label', label);
   button.title = label;
   button.append(image);
+  if (tool) {
+    button.addEventListener('click', () => setActiveTool(tool));
+  }
   return button;
 }

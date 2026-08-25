@@ -19,17 +19,16 @@ body {
   font-family: var(--font);
   font-size: var(--font-size);
   -webkit-font-smoothing: none;
-  /* Classic Win95 arrow everywhere; hotspot is the arrow tip. Per-tool
-     cursors take over inside the canvas when the tools arrive. */
+  /* Win95 arrow, hotspot at the tip. Tool cursors take over in the canvas. */
   cursor: url('/cursors/arrow.png') 0 0, default;
 }
 
-/* Buttons set their own arrow in the browser stylesheet — keep ours. */
+/* Browser stylesheets give buttons their own cursor — keep ours. */
 button {
   cursor: inherit;
 }
 
-/* Bevel recipes (Win95). Raised for buttons/frames, sunken for wells. */
+/* Win95 bevel recipes. */
 .raised {
   border: 1px solid;
   border-color: var(--surface-light) var(--shadow-dark) var(--shadow-dark) var(--surface-light);
@@ -42,7 +41,7 @@ button {
   box-shadow: inset -1px -1px var(--surface-light), inset 1px 1px var(--shadow-dark);
 }
 
-/* Window frame fills the viewport. Re-token 98.css's hardcoded frame colors. */
+/* Re-tokens 98.css's hardcoded window frame colors. */
 .paint-window {
   display: flex;
   flex-direction: column;
@@ -132,6 +131,23 @@ button {
   image-rendering: pixelated;
 }
 
+/* Selected tool: sunken bevel + Win95 checkerboard fill. */
+.tool-button.selected {
+  box-shadow:
+    inset -1px -1px var(--surface-white),
+    inset 1px 1px var(--shadow-dark),
+    inset -2px -2px var(--surface-light),
+    inset 2px 2px var(--shadow);
+  background-color: var(--surface);
+  background-image: conic-gradient(
+    var(--surface-white) 25%,
+    transparent 25% 50%,
+    var(--surface-white) 50% 75%,
+    transparent 75%
+  );
+  background-size: 2px 2px;
+}
+
 .tool-options {
   margin-top: 3px;
   width: 50px;
@@ -193,7 +209,7 @@ button {
   height: 100%;
 }
 
-/* Status bar: re-token 98.css's hardcoded sunken fields. */
+/* Re-tokens 98.css's hardcoded sunken fields. */
 .status-bar {
   flex: none;
   margin: 0 1px 1px;

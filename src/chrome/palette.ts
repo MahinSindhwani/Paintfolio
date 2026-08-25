@@ -1,6 +1,6 @@
 /* The 28 canonical MS Paint swatch colors, column-major to match the 2-row
-   grid (dark shade above its light pair). These are future ink data for the
-   drawing tools, not theme tokens — the theme lives in styles/tokens.css. */
+   grid. Ink data for the drawing tools, not theme tokens — the theme lives
+   in styles/tokens.css. */
 export const PAINT_COLORS = [
   '#000000', '#ffffff',
   '#808080', '#c0c0c0',
@@ -29,7 +29,6 @@ export function createPalette(): HTMLElement {
   return colorBox;
 }
 
-/* The two overlapping squares showing the current draw and fill colors. */
 function createForegroundBackgroundIndicator(): HTMLElement {
   const backgroundSquare = document.createElement('span');
   backgroundSquare.className = 'bg';

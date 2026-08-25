@@ -8,6 +8,9 @@ import { createMenuBar } from './chrome/menubar';
 import { createToolbar } from './chrome/toolbar';
 import { createPalette } from './chrome/palette';
 import { createStatusBar } from './chrome/statusbar';
+import { setupPaintCanvas } from './paint/canvas';
+import { setupPointerInput } from './paint/pointer';
+import { loadPersistedCommands, redo, undo } from './state/commands';
 
 const app = document.getElementById('app');
 if (!app) throw new Error('missing #app root element');
@@ -28,15 +31,45 @@ paintWindow.append(
 
 app.append(paintWindow);
 
-/* The well holds the paper and decorative scrollbars. Real page rects and
-   the hit layer arrive with later build items; this is display only. */
+/* The canvas sizes itself from the laid-out viewport, so wiring must happen
+   after the window is in the DOM. */
+const canvasViewport = paintWindow.querySelector<HTMLElement>('.canvas-viewport');
+const paperElement = paintWindow.querySelector<HTMLElement>('.paper');
+const paintCanvas = paintWindow.querySelector<HTMLCanvasElement>('.paint-canvas');
+const hitLayer = paintWindow.querySelector<HTMLElement>('.hit-layer');
+if (!canvasViewport || !paperElement || !paintCanvas || !hitLayer) {
+  throw new Error('canvas well is missing a layer');
+}
+setupPaintCanvas({ viewport: canvasViewport, paper: paperElement, canvas: paintCanvas, hitLayer });
+setupPointerInput(hitLayer);
+loadPersistedCommands();
+
+window.addEventListener('keydown', (event) => {
+  if (!(event.ctrlKey || event.metaKey) || event.altKey) return;
+  const key = event.key.toLowerCase();
+  if (key === 'z' && !event.shiftKey) {
+    event.preventDefault();
+    undo();
+  } else if ((key === 'z' && event.shiftKey) || key === 'y') {
+    event.preventDefault();
+    redo();
+  }
+});
+
+/* Layer stacking comes from DOM order — no z-index. */
 function createCanvasWell(): HTMLElement {
   const paper = document.createElement('div');
   paper.className = 'paper';
 
+  const canvas = document.createElement('canvas');
+  canvas.className = 'paint-canvas';
+
+  const hitLayerElement = document.createElement('div');
+  hitLayerElement.className = 'hit-layer';
+
   const viewport = document.createElement('div');
   viewport.className = 'canvas-viewport';
-  viewport.append(paper);
+  viewport.append(paper, canvas, hitLayerElement);
 
   const corner = document.createElement('div');
   corner.className = 'scrollbar-corner';

@@ -1,5 +1,4 @@
-/* Canvas well: sunken workspace holding the paper and decorative scrollbars.
-   The paper fills the well for now; authored page rects arrive with pages. */
+/* Paper fills the well until authored page rects land (Tier 1 item 4). */
 
 .canvas-well {
   flex: 1;
@@ -17,13 +16,36 @@
   padding: 3px;
 }
 
+/* Layers stack by DOM order: paper, paint canvas, hit layer. Their sizes
+   are set from paint/canvas.ts as calc(var(--px) * n). */
 .paper {
-  width: 100%;
-  height: 100%;
   background: var(--canvas);
 }
 
-/* Decorative scrollbars: checkerboard track, raised arrow buttons. */
+.paint-canvas {
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
+.hit-layer {
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  touch-action: none;
+  /* Precision crosshair for tools without their own cursor; hotspot is the
+     cross center. */
+  cursor: url('/cursors/precision.png') 10 10, crosshair;
+}
+
+/* Pencil cursor hotspot is the pencil tip (bottom-left). */
+.hit-layer.tool-pencil {
+  cursor: url('/cursors/pencil.png') 0 14, crosshair;
+}
+
+/* Decorative scrollbars. */
 .scrollbar {
   display: flex;
 }

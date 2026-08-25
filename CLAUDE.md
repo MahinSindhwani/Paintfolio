@@ -2,8 +2,9 @@
 
 A Windows 95 MS Paint recreation that is also my portfolio. Content lives in the
 canvas as fixed-size pages that look drawn in Paint. The Paint UI is the real
-interface: toolbar buttons navigate, the palette recolors the site, the eraser
-erases pages, closing the window drops you to a boot screen.
+interface: the menu bar navigates, toolbar buttons select real tools, the
+palette recolors the site, the eraser erases pages, closing the window drops
+you to a boot screen.
 
 Stack: Vite + TypeScript, no framework, plain CSS, 98.css for base chrome.
 
@@ -30,8 +31,9 @@ One item at a time. Don't start the next unprompted.
 
 **Tier 1 — ship and deploy this before starting Tier 2**
 - Static shell: 98.css + Win95 overrides, pixel-accurate to the reference
-- Tool state machine, custom cursors, command stack, working pencil
-- Toolbar buttons as page navigation, with the status bar showing each button's
+- Tool state machine, custom cursors, command stack, working pencil; visitor
+  doodles persist in localStorage
+- Menu-bar page navigation, with the status bar showing each item's
   destination on hover
 - Pages, one at a time, with the draw-in animation on navigation and on resize
 - Block pages and custom pages (see "Authoring pages")
@@ -294,10 +296,10 @@ string — that's what `custom` is for.
 - **Contact info must be copyable somewhere that isn't a drawing.** Pixels can't be
   selected, so it lives in the chrome — permanently in the status bar or a menu
   item — and is also printed in page content where the page is `blocks`.
-- **External links live in the menu bar** (GitHub, email, resume). The toolbar is
-  for page navigation only.
-- **The status bar is the label mechanism.** Hover shows a button's destination;
-  idle rotates jokes. Sixteen cryptic icons are not navigation by themselves.
+- **Navigation and external links live in the menu bar** (GitHub, email, resume).
+  The toolbar selects tools.
+- **The status bar is the label mechanism.** Hover shows a menu item's
+  destination; idle rotates jokes.
 - **`View > Plain` is mandatory, not a nicety.** For art pages it is the *only*
   text version of the content — the sole path for screen readers, search engines,
   and copying. It renders every page as an ordinary semantic document with real
